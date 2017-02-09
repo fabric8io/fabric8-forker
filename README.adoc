@@ -1,0 +1,7 @@
+== The little Forker
+
+The Little forker has one simple task, take a github repository URL as input and then;
+
+* Does the current user own this repo?
+** if so return
+** else fork to current user and return forked url
