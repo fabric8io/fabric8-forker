@@ -1,0 +1,6 @@
+package: github.com/fabric8io/fabric8-forker
+import:
+- package: github.com/google/go-github
+  subpackages:
+  - github
+- package: golang.org/x/oauth2
