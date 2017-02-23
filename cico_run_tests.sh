@@ -9,7 +9,6 @@ yum -y install \
     git \
     curl
 
-sed -i '/OPTIONS=.*/c\OPTIONS="--selinux-enabled --log-driver=journald --insecure-registry registry.ci.centos.org:5000"' /etc/sysconfig/docker
 service docker start
 
 

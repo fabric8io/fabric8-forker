@@ -49,8 +49,8 @@ docker-build-run:
 
 .PHONY: docker-run-deploy
 docker-run-deploy:
-	docker tag fabric8io/fabric8-forker registry.ci.centos.org:5000/fabric8io/fabric8-forker:latest
-	docker push registry.ci.centos.org:5000/fabric8io/fabric8-forker:latest 
+	docker tag fabric8io/fabric8-forker registry.devshift.net/fabric8io/fabric8-forker:latest
+	docker push registry.devshift.net/fabric8io/fabric8-forker:latest 
 
 # This is a wildcard target to let you call any make target from the normal makefile
 # but it will run inside the docker container. This target will only get executed if
