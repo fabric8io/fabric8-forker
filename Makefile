@@ -6,6 +6,15 @@ INSTALL_PREFIX=$(CUR_DIR)/bin
 VENDOR_DIR=vendor
 WORKSPACE ?= /tmp
 
+COMMIT=$(shell git rev-parse HEAD)
+GITUNTRACKEDCHANGES := $(shell git status --porcelain --untracked-files=no)
+ifneq ($(GITUNTRACKEDCHANGES),)
+COMMIT := $(COMMIT)-dirty
+endif
+BUILD_TIME=`date -u '+%Y-%m-%dT%H:%M:%SZ'`
+
+LDFLAGS=-ldflags "-X main.Commit=${COMMIT} -X main.BuildTime=${BUILD_TIME}"
+
 # If running in Jenkins we don't allow for interactively running the container
 ifneq ($(BUILD_TAG),)
 	DOCKER_RUN_INTERACTIVE_SWITCH :=
@@ -71,7 +80,7 @@ test:
 .PHONY: build
 build:
 	mkdir -p bin
-	go build -o bin/fabric8-forker
+	go build -v ${LDFLAGS} -o bin/fabric8-forker
 
 .PHONY: install
 install:
