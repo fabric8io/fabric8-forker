@@ -58,6 +58,13 @@ docker-build-run:
 
 .PHONY: docker-run-deploy
 docker-run-deploy:
+	[ -f jenkins-env ] && cat jenkins-env | grep GIT > inherit-env
+	[ -f inherit-env ] && . inherit-env
+	if [ -n "${GIT_COMMIT}" ]; then
+		TAG=$(echo ${GIT_COMMIT} | cut -c1-6)
+		docker tag fabric8io/fabric8-forker registry.devshift.net/fabric8io/fabric8-forker:${TAG}
+		docker push registry.devshift.net/fabric8io/fabric8-forker:${TAG}
+	fi
 	docker tag fabric8io/fabric8-forker registry.devshift.net/fabric8io/fabric8-forker:latest
 	docker push registry.devshift.net/fabric8io/fabric8-forker:latest 
 
