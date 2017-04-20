@@ -21,7 +21,10 @@ objects:
       app: f8forker
       deploymentconfig: f8forker
     strategy:
-      resources: {}
+      resources:
+        limits:
+          cpu: 2000m
+          memory: 500Mi
       rollingParams:
         intervalSeconds: 1
         maxSurge: 25%
