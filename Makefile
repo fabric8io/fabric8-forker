@@ -58,15 +58,23 @@ docker-build-run:
 
 .PHONY: docker-run-deploy
 docker-run-deploy:
-	[ -f jenkins-env ] && cat jenkins-env | grep GIT > inherit-env
+	[ -f jenkins-env ] && cat jenkins-env | grep -e GIT -e DEVSHIFT > inherit-env
 	[ -f inherit-env ] && . inherit-env
+	REGISTRY="push.registry.devshift.net"
+
+	if [ -n "${DEVSHIFT_USERNAME}" -a -n "${DEVSHIFT_PASSWORD}" ]; then
+		docker login -u ${DEVSHIFT_USERNAME} -p ${DEVSHIFT_PASSWORD} ${REGISTRY}
+	else
+		echo "Could not login, missing credentials for the registry"
+	fi
+
 	if [ -n "${GIT_COMMIT}" ]; then
 		TAG=$(echo ${GIT_COMMIT} | cut -c1-6)
-		docker tag fabric8io/fabric8-forker registry.devshift.net/fabric8io/fabric8-forker:${TAG}
-		docker push registry.devshift.net/fabric8io/fabric8-forker:${TAG}
+		docker tag fabric8io/fabric8-forker ${REGISTRY}/fabric8io/fabric8-forker:${TAG}
+		docker push ${REGISTRY}/fabric8io/fabric8-forker:${TAG}
 	fi
-	docker tag fabric8io/fabric8-forker registry.devshift.net/fabric8io/fabric8-forker:latest
-	docker push registry.devshift.net/fabric8io/fabric8-forker:latest 
+	docker tag fabric8io/fabric8-forker ${REGISTRY}/fabric8io/fabric8-forker:latest
+	docker push ${REGISTRY}/fabric8io/fabric8-forker:latest
 
 # This is a wildcard target to let you call any make target from the normal makefile
 # but it will run inside the docker container. This target will only get executed if
