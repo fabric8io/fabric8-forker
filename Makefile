@@ -69,7 +69,7 @@ docker-run-deploy:
 	fi
 
 	if [ -n "${GIT_COMMIT}" ]; then
-		TAG=$(echo ${GIT_COMMIT} | cut -c1-6)
+		TAG=$(echo ${GIT_COMMIT} | cut -c1-${DEVSHIFT_TAG_LEN})
 		docker tag fabric8io/fabric8-forker ${REGISTRY}/fabric8io/fabric8-forker:${TAG}
 		docker push ${REGISTRY}/fabric8io/fabric8-forker:${TAG}
 	fi
