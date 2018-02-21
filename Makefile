@@ -100,3 +100,5 @@ build:
 .PHONY: install
 install:
 	glide install
+	glide tree
+	glide list
